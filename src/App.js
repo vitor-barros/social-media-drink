@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { auth } from "./firebaseConfig"; 
+import DrinkRegister from "./DrinkRegister";
+import DrinkList from "./DrinkList";
+import Register from "./Register"; 
+// import AllDrinksList from "./AllDrinksList";
+import AllDrinksList from "./AllDrinkList";
 
-function App() {
+const App = () => {
+  const [codUsuario, setCodUsuario] = useState(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setCodUsuario(user.uid);
+        setIsRegistered(true);
+      } else {
+        setCodUsuario(null);
+        setIsRegistered(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Sua Aplicação</h1>
+      {/* {!isRegistered ? (
+        <Register setIsRegistered={setIsRegistered} /> // Exibe o componente de registro se não estiver registrado
+      ) : (
+        <> */}
+          <DrinkList codUsuario={codUsuario} /> // Exibe a lista de drinks do usuário
+          <DrinkRegister codUsuario={codUsuario} /> // Exibe o componente de registro de drinks
+          <AllDrinksList /> // Exibe todos os drinks cadastrados por todos os usuários
+        {/* </> */}
+      {/* )} */}
     </div>
   );
-}
+};
 
 export default App;
