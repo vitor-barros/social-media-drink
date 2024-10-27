@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useAuth } from "./contexts/AuthContext"; // Importando o AuthContext
 import { database } from "./firebaseConfig"; // Altere para usar o Realtime Database
+import Header from "./components/Header"; // Importando o componente Header
+import Footer from "./components/Footer";
 
 const DrinkRegister = () => {
   const { currentUser, login } = useAuth(); // Obtendo o usuário e a função de login do AuthContext
@@ -66,7 +68,9 @@ const DrinkRegister = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-pink-200 rounded-lg shadow-lg">
+    <div className="min-h-screen w-ful bg-gradient-to-r from-orange-400 via-pink-300 to-red-500">
+      <Header />
+    <div className="m-12 max-w-md mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Registrar Drink</h2>
       <div className="flex flex-col">
         <div className="mb-4">
@@ -107,6 +111,8 @@ const DrinkRegister = () => {
           Registrar Drink
         </button>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };

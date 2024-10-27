@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const AllDrinksList = () => {
   const [drinks, setDrinks] = useState([]);
@@ -65,7 +66,8 @@ const AllDrinksList = () => {
         ))}
       </ul>
     )}
-  </div>
+  </div>  
+  <Footer />
 </div>
   );
 };

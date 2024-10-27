@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from "./contexts/AuthContext"; // Importando o AuthContext para pegar o usuário logado
+import { useAuth } from "./contexts/AuthContext";
 import { getDatabase, ref, onValue } from 'firebase/database';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import UserProfile from './components/UserProfile';
+
+import styles from './index.css'
+
+import './PerfilUsuario.css';
 
 const PerfilUsuario = () => {
   const { currentUser } = useAuth(); // Pegando o usuário logado do AuthContext
@@ -34,22 +41,37 @@ const PerfilUsuario = () => {
   }, [currentUser, db]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-pink-50 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Drinks Cadastrados por {usuarioNome}</h2>
-      {drinks.length === 0 ? (
-        <p className="text-gray-600 text-center">Nenhum drink cadastrado.</p>
-      ) : (
-        <ul className="space-y-4">
-          {drinks.map(drink => (
-            <li key={drink.id} className="p-4 border border-gray-300 rounded-lg bg-white shadow-sm">
-              <h3 className="text-xl font-semibold text-gray-800">{drink.nomeDrink}</h3>
-              <p className="text-gray-700"><strong>Descrição:</strong> {drink.descricao}</p>
-              <p className="text-gray-700"><strong>Tipo:</strong> {drink.tipo}</p>
-              <p className="text-gray-700"><strong>Cadastrado por:</strong> {usuarioNome}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className='min-h-screen w-ful bg-gradient-to-r from-orange-400 via-pink-300 to-red-500'>
+      <Header />
+      {/* <div className="max-w-4xl mx-auto p-6 bg-pink-50 rounded-lg shadow-lg"> */}
+      <div className='div-header'>
+        <UserProfile userName={usuarioNome} />
+        {drinks.length === 0 ? (
+          <p className="text-gray-600 text-center">Nenhum drink cadastrado.</p>
+        ) : (
+          <ul className="space-y-6">
+            {drinks.map((drink) => (
+              <li key={drink.id} className="social-media-card">
+                <div className="card-header">
+                  <h2 className="user-name">{usuarioNome}</h2>
+                </div>
+                <h3 className="post-title">{drink.nomeDrink}</h3>
+                <p className="text-gray-700">
+                  <strong>Descrição:</strong> {drink.descricao}
+                </p>
+                <p className="post-type">
+                  <strong>Tipo:</strong> {drink.tipo}
+                </p>
+                <p className="post-description">
+                  <strong>Cadastrado por:</strong> {usuarioNome}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      {/* </div> */}
+      </div>
+      <Footer />
     </div>
   );
 };
