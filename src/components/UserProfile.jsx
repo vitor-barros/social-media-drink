@@ -35,7 +35,7 @@ const UserProfile = ({ userName = "John Doe", onLogout = () => console.log("Logo
         <h2 className="text-2xl font-bold mt-3 mb-1 text-center">{userName}</h2>
         <p className="text-sm text-gray-600 m-0">User Profile</p>
         <button
-          className="w-full px-4 py-2 bg-white bg-opacity-90 rounded-lg shadow-lg rounded-md cursor-pointer flex items-center justify-center transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
+          className="w-full px-4 py-2 bg-white bg-opacity-90 rounded-lg shadow-lg cursor-pointer flex items-center justify-center transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
           onClick={handleLogout}
         >
           <svg
