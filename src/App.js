@@ -25,13 +25,12 @@ const App = () => {
 
             {/* Rotas Privadas */}
             <Route  element={<RotaPrivada />}>
-              <Route path="/" element={<Teste />} />
+              <Route path="/" element={<AllDrinksList />} />
               
               <Route path="/register-drink" element={<DrinkRegister />} />
               <Route path="/teste" element= {<Teste />}/>
               {/* 
               <Route path="/drink-list" element={<DrinkList codUsuario={codUsuario} />} />
-              <Route path="/all-drinks" element={<AllDrinksList />} /> 
               */}
             </Route>
           </Routes>

@@ -7,39 +7,40 @@ function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login, loginWithGoogle } = useAuth();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); // Estado de loading
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true); // Ativa o loading
-    try {
-      setError('');
-      setIsButtonDisabled(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      navigate("/");
-    } catch {
-      setError("Email e/ou senha incorreto(s)");
-    } finally {
-      setLoading(false); // Desativa o loading
-      setIsButtonDisabled(false);
-    }
-  }
+   const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!emailRef.current.value || !passwordRef.current.value) {
+            setError("Por favor, preencha todos os campos.");
+            return;
+        }
+        setLoading(true);
+        try {
+            setError('');
+            await login(emailRef.current.value, passwordRef.current.value);
+            navigate("/");
+        } catch {
+            setError("Email e/ou senha incorreto(s)");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const handleGoogleLogin = async () => {
-    setError('');
-    setLoading(true); // Ativa o loading
-    try {
-      await loginWithGoogle();
-      navigate('/'); // Redireciona para a página inicial ou dashboard após o login
-    } catch {
-      setError('Falha ao fazer login com Google. Tente novamente.');
-    } finally {
-      setLoading(false); // Desativa o loading
-    }
-  };
+    const handleGoogleLogin = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            await loginWithGoogle();
+            navigate('/');
+        } catch {
+            setError('Falha ao fazer login com Google. Tente novamente.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-400 via-pink-300 to-red-500">
@@ -78,10 +79,10 @@ function Login() {
 
           <button
             type="submit"
-            disabled={isButtonDisabled}
+            disabled={loading}
             className="w-full py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
           >
-            Entrar
+            {loading ? 'Carregando...' : 'Entrar'}
           </button>
 
           <button
