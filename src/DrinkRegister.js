@@ -29,6 +29,11 @@ const DrinkRegister = () => {
         }
       }
 
+      if (!nomeDrink.trim() || !descricao.trim() || !tipo.trim()) {
+        alert("Todos os campos devem ser preenchidos.");
+        return;
+      }
+
       // Após login, pega o código do usuário novamente
       const updatedUser = currentUser || { uid: null };
       if (!updatedUser.uid) {
