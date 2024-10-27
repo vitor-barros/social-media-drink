@@ -1,47 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { getDatabase, ref, child, get } from 'firebase/database';
+import { useAuth } from "./contexts/AuthContext"; // Importando o AuthContext para pegar o usuário logado
+import { getDatabase, ref, onValue } from 'firebase/database';
 
-const PerfilUsuario = ({ codUsuario }) => {
+const PerfilUsuario = () => {
+  const { currentUser } = useAuth(); // Pegando o usuário logado do AuthContext
   const [drinks, setDrinks] = useState([]);
   const [usuarioNome, setUsuarioNome] = useState('');
   const db = getDatabase();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Referência para os drinks do usuário
-        const drinksRef = ref(db, `usuarios/${codUsuario}/drinks`);
-        const drinksSnapshot = await get(drinksRef);
+    if (!currentUser) {
+      console.log("Usuário não encontrado!");
+      return;
+    }
 
-        if (drinksSnapshot.exists()) {
-          const drinksData = drinksSnapshot.val();
-          const drinksList = Object.keys(drinksData).map(id => ({
-            id,
-            ...drinksData[id],
-          }));
-          setDrinks(drinksList);
-        } else {
-          console.log("Nenhum drink encontrado.");
-        }
+    const userRef = ref(db, `usuarios/${currentUser.uid}`);
 
-        // Referência para os dados do usuário
-        const usuarioRef = ref(db, `usuarios/${codUsuario}`);
-        const usuarioSnapshot = await get(usuarioRef);
-
-        if (usuarioSnapshot.exists()) {
-          const usuarioData = usuarioSnapshot.val();
-          setUsuarioNome(usuarioData.nome || "Usuário Desconhecido");
-        } else {
-          console.log("Usuário não encontrado!");
-        }
-
-      } catch (error) {
-        console.error("Erro ao buscar dados do usuário e drinks:", error);
+    // Real-time listener para atualizar automaticamente os drinks no perfil
+    const unsubscribe = onValue(userRef, (snapshot) => {
+      const userData = snapshot.val();
+      if (userData) {
+        setUsuarioNome(userData.nome || "Usuário Desconhecido");
+        const drinksData = userData.drinks || {};
+        const drinksList = Object.keys(drinksData).map(id => ({
+          id,
+          ...drinksData[id],
+        }));
+        setDrinks(drinksList);
       }
-    };
+    });
 
-    fetchData();
-  }, [codUsuario, db]);
+    return () => unsubscribe();
+  }, [currentUser, db]);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-pink-50 rounded-lg shadow-lg">
