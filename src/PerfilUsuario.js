@@ -4,8 +4,9 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import UserProfile from './components/UserProfile';
-
+import BotaoTrash from './images/trash.svg'
 import styles from './index.css'
+import { removeDrinkFromDatabase } from './userService';
 
 import './PerfilUsuario.css';
 
@@ -40,6 +41,11 @@ const PerfilUsuario = () => {
     return () => unsubscribe();
   }, [currentUser, db]);
 
+  const handleDelete = async (nomeDrink) => {
+    await removeDrinkFromDatabase(currentUser.uid, nomeDrink);
+    setDrinks(drinks.filter(drink => drink.nomeDrink !== nomeDrink));
+  };
+
   return (
     <div className='min-h-screen w-ful bg-gradient-to-r from-orange-400 via-pink-300 to-red-500'>
       <Header />
@@ -62,12 +68,20 @@ const PerfilUsuario = () => {
                 <p className="post-type">
                   <strong>Tipo:</strong> {drink.tipo}
                 </p>
-                <p className="post-description">
-                  <strong>Cadastrado por:</strong> {usuarioNome}
+                <p className="post-description flex justify-between items-center">
+                <span className="flex items-center">
+                  <strong>Cadastrado por: </strong> {usuarioNome}
+                </span>
+                <button onClick={() => handleDelete(drink.nomeDrink)} className="image-button">
+                  <img src={BotaoTrash} alt="Botão" className="w-7 h-7" />
+                </button>
                 </p>
+
               </li>
+              
             ))}
           </ul>
+          
         )}
       {/* </div> */}
       </div>
