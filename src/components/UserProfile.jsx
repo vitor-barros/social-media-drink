@@ -1,6 +1,24 @@
 import React from 'react';
+// import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const UserProfile = ({ userName = "John Doe", onLogout = () => console.log("Logout clicked") }) => {
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Erro ao deslogar:", error);
+    } 
+  };
+
   return (
     <div className="flex justify-center">
       <div className="w-80 h-64 bg-white bg-opacity-90 rounded-lg shadow-lg flex flex-col items-center justify-between p-6 box-border">
@@ -18,7 +36,7 @@ const UserProfile = ({ userName = "John Doe", onLogout = () => console.log("Logo
         <p className="text-sm text-gray-600 m-0">User Profile</p>
         <button
           className="w-full px-4 py-2 bg-white bg-opacity-90 rounded-lg shadow-lg rounded-md cursor-pointer flex items-center justify-center transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
-          onClick={onLogout}
+          onClick={handleLogout}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
