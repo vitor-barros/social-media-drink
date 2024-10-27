@@ -49,7 +49,7 @@ const AllDrinksList = () => {
     {drinks.length === 0 ? (
       <p className="text-gray-600 text-center">Nenhum drink cadastrado.</p>
     ) : (
-      <ul className="space-y-4">
+      <ul className="space-y-4 my-12">
         {drinks.map((drink) => (
           <li key={drink.id} className="p-4 border border-gray-300 rounded-lg bg-white shadow-sm">
             <h3 className="text-xl font-semibold text-gray-800">{drink.nomeDrink}</h3>

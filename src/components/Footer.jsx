@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-white bg-opacity-90 dark:bg-gray-800 w-full py-4 fixed bottom-0 left-0 flex md:hidden"> {/* flex apenas em mobile */}
+    <footer className="bg-white shadow-lg dark:bg-gray-800 w-full py-4 fixed bottom-0 left-0 flex md:hidden"> {/* flex apenas em mobile */}
       <div className="container mx-auto px-4 max-w-screen-lg">
         <div className="flex justify-center items-center space-x-20">
           <Link to="/" aria-label="Go to Main Tab" className="p-2">

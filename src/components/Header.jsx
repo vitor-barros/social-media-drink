@@ -4,7 +4,7 @@ import logo from '../images/cheershdlogo.png'; // Caminho da sua logo
 
 const Header = () => {
   return (
-    <header className="bg-white bg-opacity-90 rounded-lg shadow-lg py-4">
+    <header className="bg-white bg shadow-lg py-4">
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo e Título */}
         <div className="flex items-center space-x-2">
@@ -39,6 +39,7 @@ const Header = () => {
             >
               <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
             </svg>
+            <span className="ml-2">Perfil</span>
             {/* <span className="ml-2">Perfil</span> */}
           </Link>
         </nav>
