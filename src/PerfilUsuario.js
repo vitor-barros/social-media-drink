@@ -57,23 +57,26 @@ const PerfilUsuario = () => {
         ) : (
           <ul className="space-y-6">
             {drinks.map((drink) => (
-              <li key={drink.id} className="social-media-card">
-                <div className="card-header">
+              <li key={drink.id} className="social-media-card p-4 border rounded-lg shadow-md bg-whit">
+                {/* <div className="card-header">
                   <h2 className="user-name">{usuarioNome}</h2>
-                </div>
-                <h3 className="post-title">{drink.nomeDrink}</h3>
+                </div> */}
+                <h3 className="post-title font-bold text-lg text-gray-800">{drink.nomeDrink}</h3>
+                <div className="border-b border-gray-300 my-2"></div>
                 <p className="text-gray-700">
                   <strong>Descrição:</strong> {drink.descricao}
                 </p>
-                <p className="post-type">
+                <p className="post-type text-gray-700">
                   <strong>Tipo:</strong> {drink.tipo}
                 </p>
                 <p className="post-description flex justify-between items-center">
                 <span className="flex items-center">
-                  <strong>Cadastrado por: </strong> {usuarioNome}
+                  <p className='post-type text-gray-700'>
+                  <strong>Cadastrado por: </strong> <span className="ml-1">{usuarioNome}</span>
+                  </p>
                 </span>
                 <button onClick={() => handleDelete(drink.nomeDrink)} className="image-button">
-                  <img src={BotaoTrash} alt="Botão" className="w-7 h-7" />
+                  <img src={BotaoTrash} alt="Botão" className="w-6 h-6" />
                 </button>
                 </p>
 

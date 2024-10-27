@@ -53,6 +53,7 @@ const AllDrinksList = () => {
         {drinks.map((drink) => (
           <li key={drink.id} className="p-4 border border-gray-300 rounded-lg bg-white shadow-sm">
             <h3 className="text-xl font-semibold text-gray-800">{drink.nomeDrink}</h3>
+            <div className="border-b border-gray-300 my-2"></div>
             <p className="text-gray-700">
               <strong>Descrição:</strong> {drink.descricao}
             </p>
