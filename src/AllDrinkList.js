@@ -44,7 +44,7 @@ const AllDrinksList = () => {
   {/* Header fixo no topo */}
     <Header />
   {/* Conteúdo principal, ajustado para iniciar logo abaixo do header fixo */}
-  <div className="flex-grow mt-16 max-w-4xl mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
+  <div className="flex-grow mt-8 max-w-4xl mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
     <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Todos os Drinks Cadastrados</h2>
     {drinks.length === 0 ? (
       <p className="text-gray-600 text-center">Nenhum drink cadastrado.</p>

@@ -33,7 +33,7 @@ const UserProfile = ({ userName = "John Doe", onLogout = () => console.log("Logo
           </div>
         </div>
         <h2 className="text-2xl font-bold mt-3 mb-1 text-center">{userName}</h2>
-        <p className="text-sm text-gray-600 m-0">User Profile</p>
+        <p className="text-sm text-gray-600 m-0">Perfil do Usuário</p>
         <button
           className="w-full px-4 py-2 bg-white bg-opacity-90 rounded-lg shadow-lg cursor-pointer flex items-center justify-center transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
           onClick={handleLogout}
@@ -54,7 +54,7 @@ const UserProfile = ({ userName = "John Doe", onLogout = () => console.log("Logo
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
-          Logout
+          Sair
         </button>
       </div>
     </div>
