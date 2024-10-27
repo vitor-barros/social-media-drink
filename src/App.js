@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "./firebaseConfig"; 
 import DrinkRegister from "./DrinkRegister";
-import DrinkList from "./DrinkList";
 import AllDrinksList from "./AllDrinkList";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styles from "./index.css";
@@ -11,6 +10,7 @@ import Login from "./components/Login";
 import RotaPrivada from "./components/RotaPrivada";
 import EsqueceuSenha from "./components/EsqueceuSenha";
 import Registrar from "./components/Registrar";
+import PerfilUsuario from "./PerfilUsuario";
 
 const App = () => {
 
@@ -29,9 +29,8 @@ const App = () => {
               
               <Route path="/register-drink" element={<DrinkRegister />} />
               <Route path="/teste" element= {<Teste />}/>
-              {/* 
-              <Route path="/drink-list" element={<DrinkList codUsuario={codUsuario} />} />
-              */}
+              <Route path="/perfil" element={<PerfilUsuario />} />
+              
             </Route>
           </Routes>
         </AuthProvider>

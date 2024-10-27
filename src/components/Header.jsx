@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../images/cheershdlogo.png'; // Caminho da sua logo
 
 const Header = () => {
   return (
     <header className="bg-white bg-opacity-90 rounded-lg shadow-lg py-4">
       <div className="container mx-auto flex justify-between items-center px-4">
-        {/* Logo ou Título */}
-        <h1 className="text-2xl font-bold text-gray-800">Minha Aplicação</h1>
+        {/* Logo e Título */}
+        <div className="flex items-center space-x-2">
+          <h1 className="text-3xl font-bold text-pink-600" style={{ fontFamily: "'Pacifico', cursive" }}>
+            Cheers
+          </h1>
+          <img src={logo} alt="Logo" className="w-12 h-12" /> {/* Tamanho ajustável da logo */}
+        </div>
 
         {/* Navegação */}
         <nav className="flex space-x-4">
