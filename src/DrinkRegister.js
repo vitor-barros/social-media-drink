@@ -53,12 +53,13 @@ const DrinkRegister = () => {
         });
       }
 
-      // Salvando os dados do drink no Realtime Database
-      await database.ref(`usuarios/${updatedUser.uid}/drinks`).push({
+      // Salvando os dados do drink com push para criar novas entradas
+      await database.ref(`drinks`).push({
         nomeDrink,
         descricao,
         tipo,
         dataRegistro: new Date().toISOString(), // Adicionando a data do registro do drink
+        userId: updatedUser.uid // Referenciando o drink ao usuário
       });
 
       alert("Drink registrado com sucesso!");
@@ -75,49 +76,49 @@ const DrinkRegister = () => {
   return (
     <div className="min-h-screen w-ful bg-gradient-to-r from-orange-400 via-pink-300 to-red-500">
       <Header />
-    <div className="m-12 max-w-md mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Registrar Drink</h2>
-      <div className="flex flex-col">
-        <div className="mb-4">
-          <label className="block text-gray-600 mb-1">Nome do Drink</label>
-          <input
-            type="text"
-            value={nomeDrink}
-            onChange={(e) => setNomeDrink(e.target.value)}
-            placeholder="Nome do Drink"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
+      <div className="m-12 max-w-md mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Registrar Drink</h2>
+        <div className="flex flex-col">
+          <div className="mb-4">
+            <label className="block text-gray-600 mb-1">Nome do Drink</label>
+            <input
+              type="text"
+              value={nomeDrink}
+              onChange={(e) => setNomeDrink(e.target.value)}
+              placeholder="Nome do Drink"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-600 mb-1">Descrição</label>
+            <textarea
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              placeholder="Descrição"
+              className="w-full p-2 border border-gray-300 rounded resize-none"
+              rows="3"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-600 mb-1">Tipo</label>
+            <input
+              type="text"
+              value={tipo}
+              onChange={(e) => setTipo(e.target.value)}
+              placeholder="Tipo"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
+          <button
+            onClick={handleRegisterDrink}
+            className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition duration-300"
+          >
+            Registrar Drink
+          </button>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-600 mb-1">Descrição</label>
-          <textarea
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-            placeholder="Descrição"
-            className="w-full p-2 border border-gray-300 rounded resize-none"
-            rows="3"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-600 mb-1">Tipo</label>
-          <input
-            type="text"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
-            placeholder="Tipo"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
-        <button
-          onClick={handleRegisterDrink}
-          className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition duration-300"
-        >
-          Registrar Drink
-        </button>
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 };
