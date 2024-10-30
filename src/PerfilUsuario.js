@@ -71,6 +71,7 @@ const PerfilUsuario = () => {
               <li key={drink.id} className="social-media-card p-4 border rounded-lg shadow-md bg-white">
                 <h3 className="post-title font-bold text-lg text-gray-800">{drink.nomeDrink}</h3>
                 <div className="border-b border-gray-300 my-2"></div>
+                <img src={drink.img} alt={drink.nomeDrink} className="w-full h-auto rounded-md my-2" />
                 <p className="text-gray-700">
                   <strong>Descrição:</strong> {drink.descricao}
                 </p>

@@ -4,7 +4,9 @@ import { database } from "./firebaseConfig"; // Altere para usar o Realtime Data
 import Header from "./components/Header"; // Importando o componente Header
 import Footer from "./components/Footer";
 
+
 const DrinkRegister = () => {
+  const [img, setImg] = useState(""); 
   const { currentUser, login } = useAuth(); // Obtendo o usuário e a função de login do AuthContext
   const [nomeDrink, setNomeDrink] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -58,6 +60,7 @@ const DrinkRegister = () => {
         nomeDrink,
         descricao,
         tipo,
+        img,
         dataRegistro: new Date().toISOString(), // Adicionando a data do registro do drink
         userId: updatedUser.uid // Referenciando o drink ao usuário
       });
@@ -66,6 +69,7 @@ const DrinkRegister = () => {
       setNomeDrink(""); // Limpar o campo após o registro
       setDescricao("");
       setTipo("");
+      setImg("");
       setErrorMessage(""); // Limpa mensagens de erro ao registrar com sucesso
     } catch (error) {
       console.error("Erro ao registrar drink:", error);
@@ -109,6 +113,16 @@ const DrinkRegister = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
+          <div className="mb-4">
+          <label className="block text-gray-600 mb-1">Imagem</label>
+          <input
+            type="text"
+            value={img}
+            onChange={(e) => setImg(e.target.value)}
+            placeholder="Imagem"
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
           {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
           <button
             onClick={handleRegisterDrink}

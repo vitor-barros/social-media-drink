@@ -6,7 +6,7 @@ import SearchBar from "./components/SearchBar";
 
 const AllDrinksList = () => {
   const [drinks, setDrinks] = useState([]);
-  const [filteredDrinks, setFilteredDrinks] = useState([]); // Novo estado para drinks filtrados
+  const [filteredDrinks, setFilteredDrinks] = useState([]);
   const [userNames, setUserNames] = useState({});
   const db = getDatabase();
 
@@ -31,7 +31,7 @@ const AllDrinksList = () => {
         }
 
         setDrinks(allDrinks);
-        setFilteredDrinks(allDrinks); // Inicializar drinks filtrados
+        setFilteredDrinks(allDrinks);
       });
     };
 
@@ -57,7 +57,7 @@ const AllDrinksList = () => {
 
   const handleSearch = (query) => {
     if (query.trim() === "") {
-      setFilteredDrinks(drinks); // Mostrar todos os drinks se a busca estiver vazia
+      setFilteredDrinks(drinks);
     } else {
       const filtered = drinks.filter((drink) =>
         drink.nomeDrink.toLowerCase().includes(query.toLowerCase())
@@ -79,6 +79,11 @@ const AllDrinksList = () => {
             {filteredDrinks.map((drink) => (
               <li key={drink.id} className="p-4 border border-gray-300 rounded-lg bg-white shadow-sm">
                 <h3 className="text-xl font-semibold text-gray-800">{drink.nomeDrink}</h3>
+                <img 
+                  src={drink.img} 
+                  alt={drink.nomeDrink} 
+                  className="w-full max-w-md h-auto rounded-md my-2 mx-auto"
+                />
                 <div className="border-b border-gray-300 my-2"></div>
                 <p className="text-gray-700">
                   <strong>Descrição:</strong> {drink.descricao}
