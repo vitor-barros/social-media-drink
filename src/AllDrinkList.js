@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import SearchBar from "./components/SearchBar";
 
 const AllDrinksList = () => {
   const [drinks, setDrinks] = useState([]);
+  const [filteredDrinks, setFilteredDrinks] = useState([]); // Novo estado para drinks filtrados
   const [userNames, setUserNames] = useState({});
   const db = getDatabase();
 
@@ -29,6 +31,7 @@ const AllDrinksList = () => {
         }
 
         setDrinks(allDrinks);
+        setFilteredDrinks(allDrinks); // Inicializar drinks filtrados
       });
     };
 
@@ -52,16 +55,28 @@ const AllDrinksList = () => {
     fetchUserNames();
   }, [db]);
 
+  const handleSearch = (query) => {
+    if (query.trim() === "") {
+      setFilteredDrinks(drinks); // Mostrar todos os drinks se a busca estiver vazia
+    } else {
+      const filtered = drinks.filter((drink) =>
+        drink.nomeDrink.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredDrinks(filtered);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-orange-400 via-pink-300 to-red-500 flex flex-col">
       <Header />
       <div className="flex-grow mt-8 max-w-4xl mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Todos os Drinks Cadastrados</h2>
-        {drinks.length === 0 ? (
+        <SearchBar onSearch={handleSearch} /> 
+        {filteredDrinks.length === 0 ? (
           <p className="text-gray-600 text-center">Nenhum drink cadastrado.</p>
         ) : (
           <ul className="space-y-4 my-12">
-            {drinks.map((drink) => (
+            {filteredDrinks.map((drink) => (
               <li key={drink.id} className="p-4 border border-gray-300 rounded-lg bg-white shadow-sm">
                 <h3 className="text-xl font-semibold text-gray-800">{drink.nomeDrink}</h3>
                 <div className="border-b border-gray-300 my-2"></div>
