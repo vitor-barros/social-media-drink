@@ -8,39 +8,49 @@ function Login() {
   const passwordRef = useRef();
   const { login, loginWithGoogle } = useAuth();
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // Estado de loading
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-   const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!emailRef.current.value || !passwordRef.current.value) {
-            setError("Por favor, preencha todos os campos.");
-            return;
-        }
-        setLoading(true);
-        try {
-            setError('');
-            await login(emailRef.current.value, passwordRef.current.value);
-            navigate("/");
-        } catch {
-            setError("Email e/ou senha incorreto(s)");
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!emailRef.current.value || !passwordRef.current.value) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+    setLoading(true);
+    try {
+      setError('');
+      
+      // Realiza o login
+      const userCredential = await login(emailRef.current.value, passwordRef.current.value);
+      const user = userCredential.user;
+      
+      // Verifica se o email do usuário está confirmado
+      if (user && !user.emailVerified) {
+        setError("Por favor, confirme seu email antes de fazer login.");
+        return;
+      }
+      
+      navigate("/");
+    } catch (error) {
+      setError("Email e/ou senha incorreto(s)");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleGoogleLogin = async () => {
-        setLoading(true);
-        setError('');
-        try {
-            await loginWithGoogle();
-            navigate('/');
-        } catch {
-            setError('Falha ao fazer login com Google. Tente novamente.');
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await loginWithGoogle();
+      navigate('/');
+    } catch {
+      setError('Falha ao fazer login com Google. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-400 via-pink-300 to-red-500">

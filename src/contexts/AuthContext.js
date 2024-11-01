@@ -41,8 +41,10 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  const signup = (email, password) => {
-    return auth.createUserWithEmailAndPassword(email, password);
+  const signup = async (email, password) => {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    await userCredential.user.sendEmailVerification(); // Envia o e-mail de verificação
+    return userCredential;
   };
 
   const login = (email, password) => {
@@ -55,6 +57,7 @@ export function AuthProvider({ children }) {
   
   const resetPassword = (email) => auth.sendPasswordResetEmail(email);
   
+
 
   const value = {
     currentUser,

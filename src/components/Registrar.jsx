@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { database } from '../firebaseConfig';
 import Usuario from '../Usuario';
-import { DangerAlert } from './Message';
+import { DangerAlert, SuccessAlert } from './Message';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Registrar() {
@@ -14,11 +14,14 @@ function Registrar() {
   const { signup } = useAuth();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError(''); 
+    setError('');
+    setMessage('');
+    setIsButtonDisabled(true);
 
     const nomeValido = Usuario.validarNome(nameRef.current.value);
     const emailValido = Usuario.validarEmail(emailRef.current.value);
@@ -56,8 +59,11 @@ function Registrar() {
         email: emailRef.current.value,
         dataRegistro: new Date().toISOString(),
       });
+      setMessage("Cadastro realizado com sucesso! Verifique seu e-mail para concluir o cadastro.");
+      setIsButtonDisabled(true);
+      
       console.log('Usuário cadastrado com sucesso!');
-      navigate("/");
+      //navigate("/");
     } catch (error) {
       // Captura erros específicos e define uma mensagem mais amigável
       switch (error.code) {
@@ -70,6 +76,7 @@ function Registrar() {
         default:
           setError("Erro ao cadastrar o usuário. Tente novamente.");
       }
+      setError('');
     }
   }
 
@@ -80,7 +87,7 @@ function Registrar() {
         
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
           {error && <DangerAlert message={error} />}
-          
+          {message && <SuccessAlert message={message}/>}
           <div>
             <label className="text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="name">Nome:</label>
             <input
