@@ -1,30 +1,27 @@
 import React, { useContext, useState } from "react";
-import { useAuth } from "./contexts/AuthContext"; // Importando o AuthContext
-import { database } from "./firebaseConfig"; // Altere para usar o Realtime Database
-import Header from "./components/Header"; // Importando o componente Header
+import { useAuth } from "./contexts/AuthContext";
+import { database } from "./firebaseConfig";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
-
 
 const DrinkRegister = () => {
   const [img, setImg] = useState(""); 
-  const { currentUser, login } = useAuth(); // Obtendo o usuário e a função de login do AuthContext
+  const { currentUser, login } = useAuth(); 
   const [nomeDrink, setNomeDrink] = useState("");
   const [descricao, setDescricao] = useState("");
   const [tipo, setTipo] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // Para mensagens de erro
+  const [errorMessage, setErrorMessage] = useState(""); 
 
-  // Pegando o ID do usuário do AuthContext
   const codUsuario = currentUser ? currentUser.uid : null;
 
   const handleRegisterDrink = async () => {
     try {
       if (!codUsuario) {
-        // Se o usuário não estiver logado, tenta fazer login (você pode personalizar isso)
         const email = prompt("Por favor, insira seu email:");
         const password = prompt("Por favor, insira sua senha:");
         
         if (email && password) {
-          await login(email, password); // Tentando fazer login
+          await login(email, password);
         } else {
           alert("Email e senha são necessários para login.");
           return;
@@ -36,93 +33,112 @@ const DrinkRegister = () => {
         return;
       }
 
-      // Após login, pega o código do usuário novamente
       const updatedUser = currentUser || { uid: null };
       if (!updatedUser.uid) {
         alert("Usuário não encontrado. Faça login novamente.");
         return;
       }
 
-      // Salvando os dados do usuário se ainda não estiverem salvos
       const userRef = database.ref(`usuarios/${updatedUser.uid}`);
       const userSnapshot = await userRef.once('value');
 
       if (!userSnapshot.exists()) {
         await userRef.set({
-          nome: updatedUser.displayName || "Usuário sem nome", // ou pegue de onde estiver
+          nome: updatedUser.displayName || "Usuário sem nome",
           email: updatedUser.email,
           dataRegistro: new Date().toISOString(),
         });
       }
 
-      // Salvando os dados do drink com push para criar novas entradas
       await database.ref(`drinks`).push({
         nomeDrink,
         descricao,
         tipo,
         img,
-        dataRegistro: new Date().toISOString(), // Adicionando a data do registro do drink
-        userId: updatedUser.uid // Referenciando o drink ao usuário
+        dataRegistro: new Date().toISOString(),
+        userId: updatedUser.uid
       });
 
       alert("Drink registrado com sucesso!");
-      setNomeDrink(""); // Limpar o campo após o registro
+      setNomeDrink("");
       setDescricao("");
       setTipo("");
       setImg("");
-      setErrorMessage(""); // Limpa mensagens de erro ao registrar com sucesso
+      setErrorMessage("");
     } catch (error) {
       console.error("Erro ao registrar drink:", error);
-      setErrorMessage("Erro ao registrar drink. Tente novamente."); // Define mensagem de erro
+      setErrorMessage("Erro ao registrar drink. Tente novamente.");
     }
   };
 
+  // limites de caracteres pros campos
+  const MAX_NOME_DRINK = 30;
+  const MAX_DESCRICAO = 150;
+  const MAX_TIPO = 20;
+  const MAX_IMAGEM = 100;
+
   return (
-    <div className="min-h-screen w-ful bg-gradient-to-r from-orange-400 via-pink-300 to-red-500">
+    <div className="min-h-screen w-full bg-gradient-to-r from-orange-400 via-pink-300 to-red-500">
       <Header />
       <div className="m-12 max-w-md mx-auto p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Registrar Drink</h2>
         <div className="flex flex-col">
           <div className="mb-4">
             <label className="block text-gray-600 mb-1">Nome do Drink</label>
-            <input
-              type="text"
-              value={nomeDrink}
-              onChange={(e) => setNomeDrink(e.target.value)}
-              placeholder="Nome do Drink"
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={nomeDrink}
+                onChange={(e) => setNomeDrink(e.target.value)}
+                placeholder="Nome do Drink"
+                maxLength={MAX_NOME_DRINK}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              <span className="absolute right-2 bottom-2 text-gray-500 text-sm">{nomeDrink.length}/{MAX_NOME_DRINK}</span>
+            </div>
           </div>
           <div className="mb-4">
             <label className="block text-gray-600 mb-1">Descrição</label>
-            <textarea
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              placeholder="Descrição"
-              className="w-full p-2 border border-gray-300 rounded resize-none"
-              rows="3"
-            />
+            <div className="relative">
+              <textarea
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                placeholder="Descrição"
+                maxLength={MAX_DESCRICAO}
+                className="w-full p-2 border border-gray-300 rounded resize-none"
+                rows="3"
+              />
+              <span className="absolute right-2 bottom-2 text-gray-500 text-sm">{descricao.length}/{MAX_DESCRICAO}</span>
+            </div>
           </div>
           <div className="mb-4">
             <label className="block text-gray-600 mb-1">Tipo</label>
-            <input
-              type="text"
-              value={tipo}
-              onChange={(e) => setTipo(e.target.value)}
-              placeholder="Tipo"
-              className="w-full p-2 border border-gray-300 rounded"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={tipo}
+                onChange={(e) => setTipo(e.target.value)}
+                placeholder="Tipo"
+                maxLength={MAX_TIPO}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              <span className="absolute right-2 bottom-2 text-gray-500 text-sm">{tipo.length}/{MAX_TIPO}</span>
+            </div>
           </div>
           <div className="mb-4">
-          <label className="block text-gray-600 mb-1">Imagem</label>
-          <input
-            type="text"
-            value={img}
-            onChange={(e) => setImg(e.target.value)}
-            placeholder="Imagem"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+            <label className="block text-gray-600 mb-1">Imagem</label>
+            <div className="relative">
+              <input
+                type="text"
+                value={img}
+                onChange={(e) => setImg(e.target.value)}
+                placeholder="Imagem"
+                maxLength={MAX_IMAGEM}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              <span className="absolute right-2 bottom-2 text-gray-500 text-sm">{img.length}/{MAX_IMAGEM}</span>
+            </div>
+          </div>
           {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
           <button
             onClick={handleRegisterDrink}
